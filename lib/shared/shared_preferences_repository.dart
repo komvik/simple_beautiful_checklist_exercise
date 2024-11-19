@@ -1,36 +1,45 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_beautiful_checklist_exercise/shared/database_repository.dart';
 
 class SharedPreferencesRepository implements DatabaseRepository {
-  final List<String> _items = [];
+  final SharedPreferencesAsync prefs = SharedPreferencesAsync();
 
-  @override
-  Future<int> get itemCount async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return _items.length;
-  }
-
-  @override
-  Future<List<String>> getItems() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return _items;
-  }
+  List<String> _items = [];
 
   @override
   Future<void> addItem(String item) async {
-    //make sure item doesn't exist yet and is not empty
-    if (item.isNotEmpty && !_items.contains(item)) _items.add(item);
+    _items.add(item);
+    await _saveItem();
   }
 
   @override
   Future<void> deleteItem(int index) async {
     _items.removeAt(index);
+    await _saveItem();
   }
 
   @override
   Future<void> editItem(int index, String newItem) async {
-    // make sure not empty and not same as other
-    if (newItem.isNotEmpty && !_items.contains(newItem)) {
-      _items[index] = newItem;
-    }
+    _items[index] = newItem;
+    await _saveItem();
+  }
+
+  // Functions
+  @override
+  Future<List<String>> getItems() async {
+    _items = await prefs.getStringList('checklist') ?? [];
+    return _items;
+  }
+
+  @override
+  // TODO: implement itemCount
+  Future<int> get itemCount => _getItemCount();
+
+  Future<int> _getItemCount() async {
+    return _items.length;
+  }
+
+  Future<void> _saveItem() async {
+    await prefs.setStringList("checklist", _items);
   }
 }
