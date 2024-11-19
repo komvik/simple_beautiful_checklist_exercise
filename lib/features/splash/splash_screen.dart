@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 baseColor: Colors.white,
                 highlightColor: const Color.fromRGBO(228, 132, 255, 0.724),
                 child: Text(
-                  'Willkommen zur Checkliste!',
+                  'Willkommen zur meine Checkliste!',
                   style: GoogleFonts.robotoMono(
                     textStyle:
                         Theme.of(context).textTheme.headlineMedium?.copyWith(
