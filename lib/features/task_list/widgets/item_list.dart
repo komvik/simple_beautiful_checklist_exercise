@@ -67,6 +67,13 @@ class ItemList extends StatelessWidget {
                   updateOnChange();
                 },
               ),
+              IconButton(
+                icon: const Icon(Icons.check_box_outline_blank),
+                onPressed: () {
+                  //repository.deleteItem(index);
+                  updateOnChange();
+                },
+              ),
             ],
           ),
         );
